@@ -16,7 +16,7 @@ db.sqlite3
 .env
 
 # Media files
-media/
+# media/
 
 # Static files
 staticfiles/
