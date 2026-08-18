@@ -1,45 +1,65 @@
 # Shoe Hub
 
-A full-stack e-commerce web application built with Django. Shoe Hub demonstrates the core functionality of an online shopping platform, including product browsing, search, authentication, cart management, checkout, stock management, and order tracking.
+A full-stack e-commerce web application built with Django and PostgreSQL.
 
-> **Note:** This is a portfolio/demo project. Payments are simulated and no real transactions are processed.
+Shoe Hub provides a complete online shopping experience including product browsing, product search, user authentication, shopping cart management, checkout, stock management, and order tracking.
 
+## Live Demo
+
+https://ecommerce-shoehub.onrender.com
+
+---
 
 ## Features
 
-- User registration and login
-- Product listing and product details
-- Product search
-- Shopping cart
-- Add, remove, and update cart quantities
-- Stock availability validation
-- Checkout with shipping information
-- Simulated payment flow
-- Automatic order creation after successful payment
-- Automatic stock reduction after purchase
-- Order confirmation
-- My Orders page
-- Individual order details
-- Responsive user interface
-- Django admin support for managing products and orders
+- 🛍️ Browse products
+- 🔎 Search products by name
+- 📦 View product details
+- 📊 Product stock management
+- 🛒 Add products to cart
+- ➕ Increase and decrease cart quantities
+- 🗑️ Remove products from cart
+- 👤 User registration
+- 🔐 User login and logout
+- 💳 Checkout and demo payment flow
+- 📋 Order confirmation
+- 📦 Order history
+- 🔎 View individual order details
+- 🏪 Django admin panel
+- 🖼️ Product image uploads
+- 📱 Responsive user interface
+- 🗄️ PostgreSQL database
+- 🚀 Production deployment on Render
 
+---
 
 ## Tech Stack
 
 ### Backend
+
 - Python
 - Django
-- PostgreSQL
+- Gunicorn
 
 ### Frontend
-- HTML
-- CSS
+
+- HTML5
+- CSS3
 - Django Templates
 
-### Tools
+### Database
+
+- PostgreSQL
+- Django ORM
+
+### Tools & Deployment
+
 - Git
 - GitHub
+- Render
 - VS Code
+
+---
 
 ## Project Structure
 
@@ -49,35 +69,177 @@ Ecommerce/
 ├── config/
 │   ├── settings.py
 │   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
+│   ├── wsgi.py
+│   └── asgi.py
 │
 ├── products/
 │   ├── migrations/
-│   ├── templates/
-│   │   └── products/
 │   ├── static/
 │   │   └── products/
+│   ├── templates/
+│   │   └── products/
 │   ├── admin.py
+│   ├── apps.py
 │   ├── models.py
 │   ├── urls.py
 │   └── views.py
 │
+├── media/
+│   └── products/
+│
 ├── manage.py
 ├── requirements.txt
-├── run_local_https.py
-├── .gitignore
-└── README.md
+├── README.md
+└── .gitignore
+```
 
+---
 
-## Database
+## Application Flow
 
-The application uses **PostgreSQL** as its database.
+```text
+Home
+  │
+  ▼
+Products
+  │
+  ├── Search Products
+  │
+  ▼
+Product Details
+  │
+  ▼
+Add to Cart
+  │
+  ▼
+Shopping Cart
+  │
+  ▼
+Login / Register
+  │
+  ▼
+Checkout
+  │
+  ▼
+Demo Payment
+  │
+  ▼
+Order Confirmation
+  │
+  ▼
+My Orders
+```
 
-Database configuration is handled through environment variables.
+---
 
+## Database Models
 
-## Installation
+The application uses Django's ORM with PostgreSQL in production.
+
+### Product
+
+Stores:
+
+- Product name
+- Description
+- Price
+- Stock
+- Product image
+- Creation date
+
+### Cart
+
+Represents a shopping cart.
+
+### CartItem
+
+Stores:
+
+- Product
+- Quantity
+- Cart relationship
+
+### Order
+
+Stores:
+
+- Customer information
+- Shipping information
+- Order total
+- Payment status
+- Payment information
+- Order creation date
+
+### OrderItem
+
+Stores:
+
+- Product
+- Quantity
+- Price
+- Order relationship
+
+### User
+
+Uses Django's built-in authentication system.
+
+---
+
+## Authentication
+
+Shoe Hub uses Django's built-in authentication system for:
+
+- User registration
+- User login
+- User logout
+- Protected checkout
+- User-specific orders
+- User-specific order details
+
+---
+
+## Checkout & Payment
+
+The project currently uses a **demo payment flow** for testing the complete e-commerce order lifecycle.
+
+During checkout, the application:
+
+1. Validates the cart
+2. Checks product stock
+3. Collects shipping information
+4. Creates an order
+5. Creates order items
+6. Updates product stock
+7. Clears the cart
+8. Displays the order confirmation
+
+---
+
+## Django Admin
+
+The Django admin panel allows administrators to manage application data including products and orders.
+
+Admin URL:
+
+```text
+/admin/
+```
+
+---
+
+## Deployment
+
+The application is deployed using:
+
+- **Render Web Service** — Django application
+- **Render PostgreSQL** — production database
+- **Gunicorn** — WSGI application server
+
+Static files are collected using Django's `collectstatic` command.
+
+---
+
+## Local Development
 
 ### 1. Clone the repository
 
@@ -88,8 +250,15 @@ cd Ecommerce-shoehub
 
 ### 2. Create a virtual environment
 
-```bash
+Windows:
+
+```powershell
 python -m venv env
+```
+
+Activate it:
+
+```powershell
 env\Scripts\activate
 ```
 
@@ -99,28 +268,56 @@ env\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Set up the database
-
-Make sure PostgreSQL is installed and running.
-
-Configure the database settings in `config/settings.py`.
-
-### 5. Run migrations
+### 4. Apply migrations
 
 ```bash
 python manage.py migrate
 ```
 
-### 6. Create an admin account
+### 5. Create an admin user
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### 7. Start the development server
+### 6. Run the development server
 
 ```bash
 python manage.py runserver
 ```
 
-Open `http://127.0.0.1:8000/` in your browser.
+Open:
+
+```text
+http://127.0.0.1:8000/
+```
+
+---
+
+## Environment Variables
+
+Production configuration uses environment variables.
+
+Example:
+
+```text
+SECRET_KEY=your-secret-key
+DEBUG=False
+DATABASE_URL=your-database-url
+```
+
+Do not commit `.env` files or secret credentials to GitHub.
+
+---
+
+
+## 👨‍💻 Author
+
+**Hithain Ali**
+
+GitHub:
+
+https://github.com/hithainali
+
+---
+
