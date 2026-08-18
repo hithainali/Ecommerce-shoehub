@@ -1,0 +1,31 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+
+<div class="order-confirmation">
+
+    <h2>Order Placed Successfully!</h2>
+
+    <p>Thank you for your order, {{ order.name }}.</p>
+
+    <div class="order-details">
+
+        <p>
+            <strong>Order Number:</strong>
+            #{{ order.id }}
+        </p>
+
+        <p>
+            <strong>Total:</strong>
+            ₹{{ order.total_price|floatformat:2 }}
+        </p>
+
+    </div>
+
+    <a href="{% url 'product_list' %}" class="continue-shopping">
+        Continue Shopping
+    </a>
+
+</div>
+
+{% endblock %}

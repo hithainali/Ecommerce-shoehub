@@ -1,0 +1,91 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+
+<div class="orders-page">
+
+    <h2>My Orders</h2>
+
+    {% if orders %}
+
+        <div class="orders-list">
+
+            {% for order in orders %}
+
+                <a href="{% url 'order_detail' order.id %}" class="order-card">
+
+                    <div class="order-header">
+                        <div>
+                            <h3>Order #{{ order.id }}</h3>
+                            <p>{{ order.created_at|date:"d M Y" }}</p>
+                        </div>
+
+                        <strong>
+                            ₹{{ order.total_price }}
+                        </strong>
+                    </div>
+
+
+                    <div class="order-items">
+
+                        {% for item in order.items.all %}
+
+                            <div class="order-item">
+
+                                <div>
+                                    <strong>{{ item.product.name }}</strong>
+                                    <p>Quantity: {{ item.quantity }}</p>
+                                </div>
+
+                                <strong>
+                                    ₹{{ item.item_total }}
+                                </strong>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="order-details">
+
+                        <div class="order-detail">
+                            <strong>Delivery Address</strong>
+                            <span>
+                                {{ order.address }},
+                                {{ order.city }},
+                                {{ order.state }} -
+                                {{ order.pincode }}
+                            </span>
+                        </div>
+
+                        <div class="order-detail">
+                            <strong>Phone</strong>
+                            <span>{{ order.phone }}</span>
+                        </div>
+
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-orders">
+            <h3>No orders yet</h3>
+            <p>You haven't placed any orders yet.</p>
+
+            <a href="{% url 'product_list' %}">
+                Start Shopping
+            </a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

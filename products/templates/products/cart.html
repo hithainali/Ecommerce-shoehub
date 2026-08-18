@@ -1,0 +1,81 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+
+<div class="cart-page">
+
+    <h2>Your Cart</h2>
+
+    {% if cart.items.all %}
+
+        {% for item in cart.items.all %}
+
+            <div class="cart-item">
+
+                {% if item.product.image %}
+                    <div class="cart-item-image">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    </div>
+                {% endif %}
+
+                <div class="cart-item-info">
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <div class="quantity-controls">
+
+                        <a href="{% url 'decrease_quantity' item.id %}">
+                            −
+                        </a>
+
+                        <span>{{ item.quantity }}</span>
+
+                        <a href="{% url 'increase_quantity' item.id %}">
+                            +
+                        </a>
+
+                    </div>
+
+                    <p class="cart-unit-price">
+                        Price: ₹{{ item.product.price }}
+                    </p>
+
+                    <a href="{% url 'remove_from_cart' item.id %}"
+                       class="remove-button">
+                        Remove
+                    </a>
+
+                </div>
+
+                <div class="cart-item-total">
+                    ₹{{ item.item_total|floatformat:2 }}
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+        <div class="cart-summary">
+
+            <span>
+                Total ({{ cart.items.count }} items)
+            </span>
+
+            <strong>
+                ₹{{ total|floatformat:2 }}
+            </strong>
+            
+            <a href="{% url 'checkout' %}" class="checkout-button">
+                Proceed to Checkout
+            </a>
+        </div>
+
+    {% else %}
+
+        <p>Your cart is empty.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
